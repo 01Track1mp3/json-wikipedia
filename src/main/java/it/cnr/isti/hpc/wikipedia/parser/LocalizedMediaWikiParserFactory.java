@@ -45,4 +45,5 @@ public class LocalizedMediaWikiParserFactory extends MediaWikiParserFactory {
 			getCategoryIdentifers().add(name);
 	}
 
+
 }

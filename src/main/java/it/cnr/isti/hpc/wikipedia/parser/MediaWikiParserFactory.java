@@ -35,6 +35,10 @@ public class MediaWikiParserFactory {
 	public MediaWikiParser getParser(String lang) {
 		Locale locale = new Locale(lang);
 		LocalizedMediaWikiParserFactory parserFactory = new LocalizedMediaWikiParserFactory(locale);
+
+		parserFactory.setDeleteTags(false);
+		parserFactory.setTemplateParserClass(ShowValue.class);
+
 		return parserFactory.createParser();
 	}
 
