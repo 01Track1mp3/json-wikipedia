@@ -13,6 +13,8 @@ package de.tudarmstadt.ukp.wikipedia.parser.mediawiki;
 import de.tudarmstadt.ukp.wikipedia.parser.ParsedPage;
 import de.tudarmstadt.ukp.wikipedia.parser.Template;
 
+import java.util.List;
+
 /**
  * Because template parsing is a special task, it is usesfull to use
  * a special parser.
@@ -35,4 +37,6 @@ public interface MediaWikiTemplateParser {
 	 * it is configurated.
 	 */
 	public String configurationInfo();
+
+	public void setDeleteTemplates(List<String> deleteTemplates);
 }

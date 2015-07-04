@@ -20,6 +20,8 @@ import org.slf4j.LoggerFactory;
 
 import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParser;
 
+import java.util.ArrayList;
+
 /**
  * Generates the MediaWikiParser given a language.
  * 
@@ -36,8 +38,16 @@ public class MediaWikiParserFactory {
 		Locale locale = new Locale(lang);
 		LocalizedMediaWikiParserFactory parserFactory = new LocalizedMediaWikiParserFactory(locale);
 
-		parserFactory.setDeleteTags(false);
+		// custom configurations
+		// @author Sven Mischkewitz
+		parserFactory.setDeleteTags(true);
 		parserFactory.setTemplateParserClass(ShowValue.class);
+
+		ArrayList<String> deleteTemplates = new ArrayList<String>();
+		deleteTemplates.add("tag#ref");
+
+		parserFactory.setDeleteTemplates(deleteTemplates);
+
 
 		return parserFactory.createParser();
 	}

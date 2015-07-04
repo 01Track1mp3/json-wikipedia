@@ -59,11 +59,10 @@ public class ModularParser implements MediaWikiParser,
 	 * Creates a fully configurated parser...
 	 */
 	public ModularParser(String lineSeparator, List<String> languageIdentifers,
-			List<String> categoryIdentifers, List<String> imageIdentifers,
-			boolean showImageText, boolean deleteTags,
-			boolean showMathTagContent, boolean calculateSrcSpans,
-			MediaWikiTemplateParser templateParser)
-	{
+						 List<String> categoryIdentifers, List<String> imageIdentifers,
+						 boolean showImageText, boolean deleteTags,
+						 boolean showMathTagContent, boolean calculateSrcSpans,
+						 MediaWikiTemplateParser templateParser) {
 
 		setLineSeparator(lineSeparator);
 		setLanguageIdentifers(languageIdentifers);
@@ -371,7 +370,6 @@ public class ModularParser implements MediaWikiParser,
 		// Parseing the Templates (the Span List will be added to the managed
 		// lists by the function)
 
-		// TODO: remove templates containing tag:ref
 		parseTemplates(sm, cepp.templateSpans, cepp.templates, ppResult);
 
 		// Parsing all other Tags
@@ -389,15 +387,17 @@ public class ModularParser implements MediaWikiParser,
 		LinkedList<Span> lineSpans = new LinkedList<Span>();
 		getLineSpans(sm, lineSpans);
 
-		// Removing the Category Links from the Links list, and crating an
+		// Removing the Category Links from the Links list, and creating an
 		// ContentElement for these links...
-		ppResult.setCategoryElement(getSpecialLinks(sm, cepp.linkSpans,
-				cepp.links, " - ", categoryIdentifers));
+		ppResult.setCategoryElement(
+			getSpecialLinks(sm, cepp.linkSpans, cepp.links, " - ", categoryIdentifers)
+		);
 
-		// Removing the Language Links from the Links list, and crating an
+		// Removing the Language Links from the Links list, and creating an
 		// ContentElement for these links...
-		ppResult.setLanguagesElement(getSpecialLinks(sm, cepp.linkSpans,
-				cepp.links, " - ", languageIdentifers));
+		ppResult.setLanguagesElement(
+			getSpecialLinks(sm, cepp.linkSpans, cepp.links, " - ", languageIdentifers)
+		);
 
 		// Parsing and Setting the Sections... the main work is done in parse
 		// sections!
@@ -938,8 +938,8 @@ public class ModularParser implements MediaWikiParser,
 	}
 
 	private void parseTemplates(SpanManager sm,
-			List<Span> resolvedTemplateSpans,
-			List<ResolvedTemplate> resolvedTemplates, ParsedPage pp)
+		List<Span> resolvedTemplateSpans,
+		List<ResolvedTemplate> resolvedTemplates, ParsedPage pp)
 	{
 
 		sm.manageList(resolvedTemplateSpans);
@@ -1002,6 +1002,7 @@ public class ModularParser implements MediaWikiParser,
 			resolvedTemplates.add(rt);
 
 			sm.replace(ts, rt.getPreParseReplacement());
+
 		}
 
 		if (resolvedTemplateSpans.isEmpty())

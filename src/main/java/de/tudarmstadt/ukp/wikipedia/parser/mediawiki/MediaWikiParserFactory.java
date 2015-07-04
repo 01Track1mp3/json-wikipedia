@@ -292,6 +292,7 @@ public class MediaWikiParserFactory {
 			} else {
 				try {
 					mwtp = (MediaWikiTemplateParser) this.templateParserClass.newInstance();
+					mwtp.setDeleteTemplates(this.deleteTemplates);
 				} catch (InstantiationException e) {
 					e.printStackTrace();
 					logger.error("TemplateParser Class Not Found!");

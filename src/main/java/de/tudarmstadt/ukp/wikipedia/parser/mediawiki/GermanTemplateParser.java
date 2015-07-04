@@ -59,6 +59,11 @@ public class GermanTemplateParser implements MediaWikiTemplateParser {
 		return result.toString();
 	}
 
+	@Override
+	public void setDeleteTemplates(List<String> deleteTemplates) {
+		this.deleteTemplates = deleteTemplates;
+	}
+
 	public ResolvedTemplate parseTemplate(Template t, ParsedPage pp) {
 
 		final String templateName = t.getName();

@@ -13,6 +13,8 @@ package de.tudarmstadt.ukp.wikipedia.parser.mediawiki;
 import de.tudarmstadt.ukp.wikipedia.parser.ParsedPage;
 import de.tudarmstadt.ukp.wikipedia.parser.Template;
 
+import java.util.List;
+
 /**
  * This TemplateParser simply shows the name of the Template with all
  * parameters, without any exception.
@@ -45,5 +47,10 @@ public class ShowTemplateNamesAndParameters implements MediaWikiTemplateParser {
 	
 	public String configurationInfo(){
 		return "shows the Template names and all parameters";
+	}
+
+	@Override
+	public void setDeleteTemplates(List<String> deleteTemplates) {
+
 	}
 }

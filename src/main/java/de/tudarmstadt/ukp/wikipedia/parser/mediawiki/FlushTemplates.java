@@ -13,6 +13,8 @@ package de.tudarmstadt.ukp.wikipedia.parser.mediawiki;
 import de.tudarmstadt.ukp.wikipedia.parser.ParsedPage;
 import de.tudarmstadt.ukp.wikipedia.parser.Template;
 
+import java.util.List;
+
 /**
  * This TemplateParser will delete ALL templates, whitout any exception!
  * @author CJacobi
@@ -30,5 +32,10 @@ public final class FlushTemplates implements MediaWikiTemplateParser {
 	
 	public String configurationInfo(){
 		return "All Templates will be Deleted";
+	}
+
+	@Override
+	public void setDeleteTemplates(List<String> deleteTemplates) {
+
 	}
 }
