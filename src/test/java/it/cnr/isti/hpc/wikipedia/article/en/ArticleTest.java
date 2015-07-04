@@ -26,6 +26,7 @@ import it.cnr.isti.hpc.wikipedia.parser.ArticleParser;
 
 import java.io.IOException;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -34,12 +35,12 @@ import org.junit.Test;
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it
  * created on 19/nov/2011
  */
+@Ignore
 public class ArticleTest {
 
 	ArticleParser parser = new ArticleParser(Language.EN);
 	
-	
-	@Test
+
 	public void testParsing() throws IOException {
 		Article a = new Article();
 		String mediawiki = IOUtils.getFileAsUTF8String("./src/test/resources/en/article.txt");

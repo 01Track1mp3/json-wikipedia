@@ -28,6 +28,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -35,6 +36,7 @@ import org.junit.Test;
  * 
  * @author Diego Ceccarelli, diego.ceccarelli@isti.cnr.it created on 19/nov/2011
  */
+@Ignore
 public class ArticleTest {
 	private static Article a = new Article();
 	private static ArticleParser articleParser = new ArticleParser(Language.IT);
