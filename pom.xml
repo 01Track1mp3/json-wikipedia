@@ -309,12 +309,6 @@
 			<url>file://${basedir}/lib</url>
 		</repository>
 	</repositories>
-	<distributionManagement>
-		<repository>
-			<id>nicoring</id>
-			<url>scp://knowmin@nicoring.de/home/knowmin/repository/</url>
-		</repository>
-	</distributionManagement>
 	<build>
 		<extensions>
 			<extension>

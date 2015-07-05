@@ -36,7 +36,9 @@ public class Link extends ParsedPageObject{
 	 * Returns the Content Element in wich the Link occures.
 	 */
 	public Content getHomeElement(){ return home_cc; }
-	public Link setHomeElement(Content home_cc){ this.home_cc = home_cc; return this; }
+	public void setHomeElement(Content home_cc) {
+		this.home_cc = home_cc;
+	}
 
 	/**
 	 * Returns the Type of the Link.
@@ -59,7 +61,7 @@ public class Link extends ParsedPageObject{
 	public List<String> getParameters(){ return parameters; }
 
 	/**
-	 * Retruns the Link text or link caption.
+	 * Returns the Link text or link caption.
 	 */
 	public String getText(){
 		if( home_cc == null ) {
@@ -104,7 +106,7 @@ public class Link extends ParsedPageObject{
 			wordsRight--;
 		}
 
-		// retrun a string...
+		// return a string...
 		return
 			text.substring(posLeft, pos.getStart() ) +
 			text.substring(pos.getEnd(), posRight);
@@ -121,6 +123,18 @@ public class Link extends ParsedPageObject{
 		for( String s: parameters ) {
 			result.append("\nLI_PARAMETER: \""+ s +"\"" );
 		}
+		return result.toString();
+	}
+
+	public String textRepresentation() {
+		StringBuilder result = new StringBuilder();
+
+		result.append("LINK[");
+		result.append(target);
+		result.append("|");
+		result.append(getText());
+		result.append("]");
+
 		return result.toString();
 	}
 }

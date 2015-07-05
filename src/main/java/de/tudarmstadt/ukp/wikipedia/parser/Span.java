@@ -57,20 +57,29 @@ public class Span extends ParsedPageObject{
 	/**
 	 * Adjusts the start and end Position of the Span, if they are 
 	 * larger than the offset.
+	 * @param n - shifts all content after offset by n, will be negative
 	 */
 	public Span adjust(int offset, int n){
-		if( offset < 0 )return this; //null
+		if (offset < 0) {
+			return this;
+		}
 		
-		if( offset < end ){
+		if (offset < end) {
 			end += n;
-			if( end<offset )end = offset;
+			if (end < offset) {
+				end = offset;
+			}
+		} else {
+			return this;
 		}
-		else return this; //null
 		
-		if( offset < start ){
+		if (offset < start) {
 			start += n;
-			if( start<offset )start = offset;
+			if (start < offset) {
+				start = offset;
+			}
 		}
+
 		return this;	
 	}
 	
@@ -94,9 +103,9 @@ public class Span extends ParsedPageObject{
 	}
 	
 	/**
-	 * simply src.substring( this.getStart(), this.getEnd ); 
+	 * simply src.substring( this.getStart(), this.getEnd() );
 	 */
-	public String getText(String src){ 
+	public String getText(String src) {
 	    if (end > src.length()) {
 	        end = src.length();
 	    }
@@ -135,19 +144,24 @@ public class Span extends ParsedPageObject{
 	
 	/**
 	 * Returns the Span, with leading and trailing whitespaces omitted.
+	 * MUTABLE
 	 */
-	public Span trim( CharSequence src ){
-		if( start<end )
-			while(src.charAt( end-1 ) == 32){
+	public Span trim( CharSequence src ) {
+		char space = 32;
+
+		if (start < end) {
+			while (src.charAt(end - 1) == space) {
 				end--;
-				if( start==end )break;
+				if (start == end) break;
 			}
+		}
 			
-		if( start<end )
-			while( src.charAt( start ) == 32){
+		if (start < end) {
+			while (src.charAt(start) == space) {
 				start++;
-				if( start==end)break;
+				if (start == end) break;
 			}
+		}
 		
 		return this;
 	}

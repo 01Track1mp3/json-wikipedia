@@ -3,7 +3,7 @@
         <sitename>Wikipedia</sitename>
         <dbname>enwiki</dbname>
         <base>https://en.wikipedia.org/wiki/Main_Page</base>
-        <generator>MediaWiki 1.26wmf11</generator>
+        <generator>MediaWiki 1.26wmf12</generator>
         <case>first-letter</case>
         <namespaces>
             <namespace key="-2" case="first-letter">Media</namespace>
@@ -40,26 +40,25 @@
         </namespaces>
     </siteinfo>
     <page>
-        <title>List of Donalds</title>
+        <title>Lists of writers</title>
         <ns>0</ns>
-        <id>5875303</id>
+        <id>64067</id>
         <revision>
-            <id>447294861</id>
-            <parentid>442754699</parentid>
-            <timestamp>2011-08-29T10:40:38Z</timestamp>
+            <id>668486675</id>
+            <parentid>668486520</parentid>
+            <timestamp>2015-06-24T16:20:54Z</timestamp>
             <contributor>
-                <username>Mhockey</username>
-                <id>6008650</id>
+                <username>Sonicwave32</username>
+                <id>23326194</id>
             </contributor>
-            <comment>removed [[Category:Lists of mountains and hills of the United Kingdom]]; added [[Category:Lists of mountains and hills of Scotland]] using [[WP:HC|HotCat]]</comment>
+            <minor/>
+            <comment>Undid revision 668486520 by [[Special:Contributions/112.110.119.48|112.110.119.48]] ([[User talk:112.110.119.48|talk]]) list is for non-English languages</comment>
             <model>wikitext</model>
             <format>text/x-wiki</format>
-            <text xml:space="preserve" bytes="3156">
-&lt;ref&gt;some reference&lt;/ref&gt;
-{{sort|Cuba|[[1924 Cuba hurricane|&quot;Cuba&quot;]]}}
-{{tag#ref|My reference will be removed}}
-      </text>
-            <sha1>4rm3vjk96kh75p2v9dx5vdrdpv3aogw</sha1>
+            <text xml:space="preserve" bytes="12804">{{literature}}
+The following are '''lists of [[writer]]s''':
+</text>
+            <sha1>ewts1irtv7mywu0xve1ikitgzu3k8g5</sha1>
         </revision>
     </page>
 </mediawiki>

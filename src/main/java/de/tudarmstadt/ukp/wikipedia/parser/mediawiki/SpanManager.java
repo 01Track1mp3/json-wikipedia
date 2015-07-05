@@ -76,14 +76,14 @@ public class SpanManager implements CharSequence {
 	}
 
 	/**
-	 * Removes a List of Spans (not the Spans in the List), which shouldn�t be managed anymore.
+	 * Removes a List of Spans (not the Spans in the List), which shouldnt be managed anymore.
 	 * @param spans
 	 */
 	public void removeManagedList( List<Span> spans ){ 
-		final Span listIdentifer = new Span(Integer.MAX_VALUE, Integer.MIN_VALUE);	
-		spans.add( listIdentifer );	
+		final Span listIdentifier = new Span(Integer.MAX_VALUE, Integer.MIN_VALUE);
+		spans.add( listIdentifier );
 		managedLists.remove( spans );
-		spans.remove( listIdentifer );
+		spans.remove( listIdentifier );
 	}
 	
 	private void adjustLists(int offset, int n){
@@ -101,9 +101,13 @@ public class SpanManager implements CharSequence {
 	 */
 	public SpanManager delete(int start, int end){
 		sb.delete(start, end);
-		adjustLists( start, start-end );
+		adjustLists(start, start - end);
 		
-		if(calculateSrcPositions) for( int i = 0; i<end-start; i++) ib.remove( start );
+		if (calculateSrcPositions) {
+			for (int i = 0; i < end - start; i++) {
+				ib.remove( start );
+			}
+		}
 		
 		return this;
 	}

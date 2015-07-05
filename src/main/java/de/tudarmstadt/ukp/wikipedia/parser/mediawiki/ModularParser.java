@@ -346,7 +346,7 @@ public class ModularParser implements MediaWikiParser,
 		// Deletes comments out of the Source
 		deleteComments(sm);
 
-		// Deletes any TOC Tags, these are not usesd in this parser.
+		// Deletes any TOC Tags, these are not used in this parser.
 		deleteTOCTag(sm);
 
 		// Removing the Content which should not parsed but integrated later in
@@ -1323,13 +1323,18 @@ public class ModularParser implements MediaWikiParser,
 		{
 		case PARAGRAPH:
 			result.setType(Paragraph.type.NORMAL);
+			// paragraphs may propagate over multiple line breaks
+			// try to find all connected PARAGRAPH lines
 			while (!lineSpans.isEmpty())
 			{
-				if (paragraphType != getLineType(sm, lineSpans.getFirst()))
-				{
+				Span nextLineSpan = lineSpans.getFirst();
+				lineType nextLineType = getLineType(sm, nextLineSpan);
+				if (paragraphType != nextLineType) {
 					break;
 				}
-				paragraphSpans.add(lineSpans.removeFirst());
+
+				paragraphSpans.add(nextLineSpan);
+				lineSpans.removeFirst();
 			}
 			break;
 
@@ -1819,6 +1824,8 @@ public class ModularParser implements MediaWikiParser,
 					.getStart()), sm.getSrcPos(contentElementRange.getEnd())));
 		}
 
+		/** EXTERNAL LINKS **/
+
 		sm.manageList(lineSpans);
 		while (!lineSpans.isEmpty())
 		{
@@ -1841,7 +1848,11 @@ public class ModularParser implements MediaWikiParser,
 		}
 		sm.removeManagedList(lineSpans);
 
-		// Links
+		/**
+		 * INTERNAL LINKS (I)
+		 * links cannot be parsed to special link format in this step, because there is no paragraph text yet!
+		 **/
+
 		int i;
 		i = 0;
 		while (i < cepp.linkSpans.size())
@@ -1850,21 +1861,22 @@ public class ModularParser implements MediaWikiParser,
 			{
 				Span linkSpan = cepp.linkSpans.remove(i);
 				managedSpans.add(linkSpan);
-				Link l = cepp.links.remove(i).setHomeElement(result);
-				localLinks.add(l);
-				if (!showImageText && l.getType() == Link.type.IMAGE)
+
+				Link link = cepp.links.remove(i);
+				link.setHomeElement(result);
+				localLinks.add(link);
+				if (!showImageText && link.getType() == Link.type.IMAGE)
 				{
 					// deletes the Image Text from the ContentElement Text.
 					sm.delete(linkSpan);
 				}
-			}
-			else
-			{
+			} else {
 				i++;
 			}
 		}
 
-		// Templates
+		/** TEMPLATES **/
+
 		i = 0;
 		while (i < cepp.templateSpans.size())
 		{
@@ -1891,8 +1903,9 @@ public class ModularParser implements MediaWikiParser,
 					}
 					else if (parsedObjectClass == Link.class)
 					{
-						localLinks.add(((Link) parsedObject)
-								.setHomeElement(result));
+						Link l = (Link) parsedObject;
+						l.setHomeElement(result);
+						localLinks.add(l);
 					}
 					else
 					{
@@ -1906,7 +1919,8 @@ public class ModularParser implements MediaWikiParser,
 			}
 		}
 
-		// HTML/XML Tags
+		/** HTML/XML Tags **/
+
 		i = 0;
 		List<Span> tags = new ArrayList<Span>();
 		while (i < cepp.tagSpans.size())
@@ -1931,7 +1945,8 @@ public class ModularParser implements MediaWikiParser,
 			}
 		}
 
-		// noWiki
+		/** NO WIKI **/
+
 		i = 0;
 		List<Span> localNoWikiSpans = new ArrayList<Span>();
 		while (i < cepp.noWikiSpans.size())
@@ -1950,7 +1965,8 @@ public class ModularParser implements MediaWikiParser,
 			}
 		}
 
-		// MATH Tags
+		/** MATH Tags **/
+
 		i = 0;
 		List<Span> mathSpans = new ArrayList<Span>();
 		while (i < cepp.mathSpans.size())
@@ -1979,12 +1995,6 @@ public class ModularParser implements MediaWikiParser,
 
 		result.setText(sm.substring(contentElementRange));
 
-		// managed spans must be removed here and not earlier, because every
-		// change in the SpanManager affects the Spans!
-		sm.removeManagedList(boldSpans);
-		sm.removeManagedList(italicSpans);
-		sm.removeManagedList(managedSpans);
-
 		// contentElementRange ist auch noch in managedSpans !!! deswegen:
 		final int adjust = -contentElementRange.getStart();
 		for (Span s : boldSpans)
@@ -2000,6 +2010,26 @@ public class ModularParser implements MediaWikiParser,
 			s.adjust(adjust);
 		}
 
+		/** INTERNAL LINKS (II) **/
+
+		i = 0;
+		while (i < localLinks.size()) {
+			// display all link information in the parsed text
+			// so we do not lose information in the json scope
+			// @author Sven Mischkewitz
+			Link link = localLinks.get(i);
+
+			if (link.getType() == Link.type.INTERNAL) {
+				// replace link in text with complete string representation
+				sm.replace(link.getPos(), link.textRepresentation());
+			}
+
+			i++;
+		}
+
+		result.setText(sm.substring(contentElementRange));
+
+
 		result.setFormatSpans(FormatType.BOLD, boldSpans);
 		result.setFormatSpans(FormatType.ITALIC, italicSpans);
 		result.setFormatSpans(FormatType.TAG, tags);
@@ -2008,6 +2038,12 @@ public class ModularParser implements MediaWikiParser,
 
 		result.setLinks(sortLinks(localLinks));
 		result.setTemplates(sortTemplates(localTemplates));
+
+		// managed spans must be removed here and not earlier, because every
+		// change in the SpanManager affects the Spans!
+		sm.removeManagedList(boldSpans);
+		sm.removeManagedList(italicSpans);
+		sm.removeManagedList(managedSpans);
 
 		return result;
 	}
