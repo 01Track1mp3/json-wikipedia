@@ -4,7 +4,7 @@
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
  *  You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
  *
  *  Unless required by applicable law or agreed to in writing, software
@@ -26,7 +26,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Models the locale for a language. 
+ * Models the locale for a language.
  * 
  * @author Diego Ceccarelli <diego.ceccarelli@isti.cnr.it>
  * 
@@ -34,14 +34,14 @@ import org.slf4j.LoggerFactory;
  */
 public class Locale {
 
-	private Properties properties;
+	private final Properties properties;
 
 	private static final Logger logger = LoggerFactory.getLogger(Locale.class);
 	private static final String SEPARATOR = ",";
 
 	public Locale(String lang) {
 		properties = new Properties();
-		
+
 		try {
 			properties.load(Locale.class.getResourceAsStream("/lang/locale-"
 					+ lang + ".properties"));
@@ -50,15 +50,15 @@ public class Locale {
 					e.toString());
 			System.exit(-1);
 		}
-		
-		logger.info("using {} language ",properties.get("language"));
+
+		logger.info("using {} language ", properties.get("language"));
 
 	}
 
 	private List<String> getValues(String key) {
 
 		String val = properties.getProperty(key);
-		if (val == null){
+		if (val == null) {
 			return Collections.emptyList();
 		}
 		List<String> values = new ArrayList<String>();
@@ -80,7 +80,7 @@ public class Locale {
 	public List<String> getDisambigutionIdentifiers() {
 		return getValues("disambiguation");
 	}
-	
+
 	public List<String> getCategoryIdentifiers() {
 		return getValues("category");
 	}
