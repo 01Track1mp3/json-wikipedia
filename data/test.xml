@@ -57,9 +57,12 @@
             <format>text/x-wiki</format>
             <text xml:space="preserve" bytes="12804">
                 laber blubb puff
+* normale list
+* [[normal_list|mit_a_link]]
+
 {{columns-list|2|
 * text
-* mehr text
+* [[link_in_list|mehr text]]
 * macht eine liste
 }}
 [[ein link|mit label]] pli pla plu
