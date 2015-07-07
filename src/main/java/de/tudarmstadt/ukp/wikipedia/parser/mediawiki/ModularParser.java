@@ -1001,12 +1001,32 @@ public class ModularParser implements MediaWikiParser,
 			resolvedTemplates.add(rt);
 
 
+			/**
+			 * @author Sven Mischkewitz
+			 */
 			String columnListsTemplateName = "columns-list";
 
 			if (templateName.equals(columnListsTemplateName)
 					&& templateOptions.size() >= 2) {
-				String wrappedList = templateOptions.get(1).trim();
-				sm.replace(ts, templateOptions.get(1));
+				StringBuilder wrappedListBuilder = new StringBuilder();
+
+				// append the rest of the list contents
+				// join with |, for the pipes where removed, when parsed for template options
+				int i = 1; // skip amount of columns
+				while (i < templateOptions.size()) {
+					wrappedListBuilder.append(templateOptions.get(i).trim());
+
+					if (i < templateOptions.size() - 1) {
+						wrappedListBuilder.append('|');
+					}
+
+					i++;
+				}
+
+
+
+				String wrappedList = wrappedListBuilder.toString();
+				sm.replace(ts, wrappedList);
 
 				resolvedTemplates.remove(rt);
 				resolvedTemplateSpans.remove(ts);
