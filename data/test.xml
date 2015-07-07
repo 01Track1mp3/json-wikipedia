@@ -55,8 +55,14 @@
             <comment>Undid revision 668486520 by [[Special:Contributions/112.110.119.48|112.110.119.48]] ([[User talk:112.110.119.48|talk]]) list is for non-English languages</comment>
             <model>wikitext</model>
             <format>text/x-wiki</format>
-            <text xml:space="preserve" bytes="12804">{{literature}}
-The following are '''lists of [[writer]]s''':
+            <text xml:space="preserve" bytes="12804">
+                laber blubb puff
+{{columns-list|2|
+* text
+* mehr text
+* macht eine liste
+}}
+[[ein link|mit label]] pli pla plu
 </text>
             <sha1>ewts1irtv7mywu0xve1ikitgzu3k8g5</sha1>
         </revision>

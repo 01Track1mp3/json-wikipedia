@@ -418,7 +418,6 @@ public class ModularParser implements MediaWikiParser,
 	}
 
 
-
 	/**
 	 * Deleting all comments out of the SpanManager...<br/>
 	 * &lt!-- COMMENT -->
@@ -984,9 +983,9 @@ public class ModularParser implements MediaWikiParser,
 
 			Span ts = new Span(templateOpenTag, templateCloseTag + 2);
 
-			Template t = new Template(ts, encodeWikistyle(sm.substring(
-					templateOpenTag + 2, templateNameEnd).trim()),
-					templateOptions);
+			String templateName = encodeWikistyle(sm.substring(templateOpenTag + 2, templateNameEnd).trim());
+
+			Template t = new Template(ts, templateName, templateOptions);
 
 			if (calculateSrcSpans)
 			{
@@ -1001,8 +1000,19 @@ public class ModularParser implements MediaWikiParser,
 			resolvedTemplateSpans.add(ts);
 			resolvedTemplates.add(rt);
 
-			sm.replace(ts, rt.getPreParseReplacement());
 
+			String columnListsTemplateName = "columns-list";
+
+			if (templateName.equals(columnListsTemplateName)
+					&& templateOptions.size() >= 2) {
+				String wrappedList = templateOptions.get(1).trim();
+				sm.replace(ts, templateOptions.get(1));
+
+				resolvedTemplates.remove(rt);
+				resolvedTemplateSpans.remove(ts);
+			} else {
+				sm.replace(ts, rt.getPreParseReplacement());
+			}
 		}
 
 		if (resolvedTemplateSpans.isEmpty())
@@ -1813,8 +1823,10 @@ public class ModularParser implements MediaWikiParser,
 		List<Span> managedSpans = new ArrayList<Span>();
 		sm.manageList(managedSpans);
 
-		Span contentElementRange = new Span(lineSpans.getFirst().getStart(),
-				lineSpans.getLast().getEnd()).trim(sm);
+		Span contentElementRange = new Span(
+				lineSpans.getFirst().getStart(),
+				lineSpans.getLast().getEnd()
+			).trim(sm);
 		managedSpans.add(contentElementRange);
 
 		// set the SrcSpan
@@ -2012,6 +2024,13 @@ public class ModularParser implements MediaWikiParser,
 
 		/** INTERNAL LINKS (II) **/
 
+		SpanManager resultSpanManager = new SpanManager(result.getText());
+		List<Span> localLinkSpans = new ArrayList<Span>();
+		for (Link link : localLinks) {
+			localLinkSpans.add(link.getPos());
+		}
+
+		resultSpanManager.manageList(localLinkSpans);
 		i = 0;
 		while (i < localLinks.size()) {
 			// display all link information in the parsed text
@@ -2021,14 +2040,17 @@ public class ModularParser implements MediaWikiParser,
 
 			if (link.getType() == Link.type.INTERNAL) {
 				// replace link in text with complete string representation
-				sm.replace(link.getPos(), link.textRepresentation());
+				resultSpanManager.replace(link.getPos(), link.textRepresentation());
 			}
 
 			i++;
 		}
 
-		result.setText(sm.substring(contentElementRange));
+		resultSpanManager.removeManagedList(localLinkSpans);
+		result.setText(resultSpanManager.toString());
 
+
+		/** SET RESULTS **/
 
 		result.setFormatSpans(FormatType.BOLD, boldSpans);
 		result.setFormatSpans(FormatType.ITALIC, italicSpans);
