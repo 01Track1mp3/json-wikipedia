@@ -582,6 +582,28 @@ public class ModularParser implements MediaWikiParser,
 					sc.setSrcSpan(new SrcSpan(sm.getSrcPos(s.getStart()), -1));
 				}
 
+				/**
+				 * @author Sven Mischkewitz
+				 * Exlude external links and see also sections from result
+				 */
+				String sectionTitle = sc.getTitle().toLowerCase();
+				if (sectionTitle.equals("see also")
+						|| sectionTitle.equals("external links")) {
+					contentSections.remove(sc);
+
+					// find next section and remove everything
+					s = lineSpans.getFirst();
+					while (!lineSpans.isEmpty()) {
+						s = lineSpans.getFirst();
+
+						if (getLineType(sm, s) == lineType.SECTION) {
+							break;
+						}
+
+						lineSpans.removeFirst();
+					}
+				}
+
 				break;
 
 			case HR:
